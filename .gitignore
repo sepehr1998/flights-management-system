@@ -133,3 +133,64 @@ $RECYCLE.BIN/
 _NCrunch*
 
 .idea/
+
+employee-management-client/.DS_STORE
+
+flights-management-client/dist/
+flights-management-client/bazel-out
+flights-management-client/integration/bazel/bazel-*
+flights-management-client/*.log
+flights-management-client/node_modules/
+flights-management-client/modules/ssr-benchmarks/node_modules/
+
+# Include when developing application packages.
+flights-management-client/pubspec.lock
+flights-management-client/.c9
+flights-management-client/.idea/
+flights-management-client/.devcontainer/*
+!flights-management-client/.devcontainer/README.md
+!flights-management-client/.devcontainer/recommended-devcontainer.json
+!flights-management-client/.devcontainer/recommended-Dockerfile
+flights-management-client/.settings/
+flights-management-client/.vscode/launch.json
+flights-management-client/.vscode/settings.json
+flights-management-client/.vscode/tasks.json
+flights-management-client/*.swo
+flights-management-client/*.swp
+flights-management-client/modules/.settings
+flights-management-client/modules/.vscode
+flights-management-client/.vimrc
+flights-management-client/.nvimrc
+
+# Don't check in secret files
+flights-management-client/*secret.js
+
+# Ignore npm/yarn debug log
+flights-management-client/npm-debug.log
+flights-management-client/yarn-error.log
+
+# build-analytics
+flights-management-client/.build-analytics
+
+# rollup-test output
+flights-management-client/modules/rollup-test/dist/
+
+# User specific bazel settings
+flights-management-client/.bazelrc.user
+
+# User specific ng-dev settings
+flights-management-client/.ng-dev.user*
+
+flights-management-client/.notes.md
+flights-management-client/baseline.json
+
+# Ignore .history for the xyz.local-history VSCode extension
+flights-management-client/.history
+
+# Husky
+flights-management-client/.husky/_
+
+# Ignore cache created with the Angular CLI.
+flights-management-client/.angular/
+
+flights-management-client/.vscode/
