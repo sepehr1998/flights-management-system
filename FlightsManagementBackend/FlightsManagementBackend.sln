@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightsManagementBackend", "FlightsManagementBackend\FlightsManagementBackend.csproj", "{5788F2B3-366D-46CE-9FB3-33779F1F2CBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5788F2B3-366D-46CE-9FB3-33779F1F2CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5788F2B3-366D-46CE-9FB3-33779F1F2CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5788F2B3-366D-46CE-9FB3-33779F1F2CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5788F2B3-366D-46CE-9FB3-33779F1F2CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
