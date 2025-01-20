@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {DatePipe, NgForOf} from "@angular/common";
+import { FlightService } from "../api/services/flight.service";
+import { FlightRm } from "../api/models/flight-rm";
 
 @Component({
   selector: 'app-search-flights',
@@ -12,40 +14,16 @@ import {DatePipe, NgForOf} from "@angular/common";
   styleUrl: './search-flights.component.css'
 })
 export class SearchFlightsComponent {
-  searchResult: FlightRm[] = [
-    {
-      airline: "American Airlines",
-      remainingNumberOfSeats: 500,
-      departure: { time: Date.now().toString(), place: "Los Angeles" },
-      arrival: { time: Date.now().toString(), place: "Istanbul" },
-      price: "350",
-    },
-    {
-      airline: "Deutsche BA",
-      remainingNumberOfSeats: 60,
-      departure: { time: Date.now().toString(), place: "Munchen" },
-      arrival: { time: Date.now().toString(), place: "Schiphol" },
-      price: "600",
-    },
-    {
-      airline: "British Airways",
-      remainingNumberOfSeats: 60,
-      departure: { time: Date.now().toString(), place: "London, England" },
-      arrival: { time: Date.now().toString(), place: "Vizzola-Ticino" },
-      price: "600",
-    },
-  ]
-}
+  constructor(private flightService: FlightService) {}
+  ngOnInit(): void {
 
-export interface FlightRm {
-  airline: string
-  arrival: TimePlaceRm
-  departure: TimePlaceRm
-  price: string
-  remainingNumberOfSeats: number
-}
-
-export interface TimePlaceRm {
-  place: string
-  time: string
+  }
+  searchResult: FlightRm[] = []
+  search(){
+    this.flightService.searchFlight({}).subscribe(response=>this.searchResult = response,
+      this.handleError)
+  }
+  private handleError(error:any){
+    console.log(error)
+  }
 }
