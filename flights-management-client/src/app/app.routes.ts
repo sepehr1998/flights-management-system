@@ -5,5 +5,5 @@ import { BookFlightComponent } from "./book-flight/book-flight.component";
 export const routes: Routes = [
   { path: '', component: SearchFlightsComponent },
   { path: 'search-flights', component: SearchFlightsComponent },
-  { path: 'book-flight', component: BookFlightComponent }
+  { path: 'book-flight/:flightId', component: BookFlightComponent }
 ];
