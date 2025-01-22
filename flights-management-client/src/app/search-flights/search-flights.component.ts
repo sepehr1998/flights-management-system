@@ -26,6 +26,7 @@ export class SearchFlightsComponent {
       this.handleError)
   }
   private handleError(error:any){
+
     console.log(error)
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FlightService } from "../api/services/flight.service";
 import { FlightRm } from "../api/models/flight-rm";
 import { DatePipe } from "@angular/common";
@@ -15,7 +15,7 @@ import { DatePipe } from "@angular/common";
 
 })
 export class BookFlightComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private flightService: FlightService) { }
+  constructor(private route: ActivatedRoute, private flightService: FlightService, private router: Router) { }
   flightId: string = 'not loaded'
   flight: FlightRm = {}
   ngOnInit() {
@@ -25,6 +25,14 @@ export class BookFlightComponent implements OnInit {
   private findFlight = (flightId: string | null) => {
     this.flightId = flightId ?? 'not passed'
     this.flightService.findFlight({id: this.flightId})
-      .subscribe(flight => this.flight = flight)
+      .subscribe(flight => this.flight = flight, this.handleError)
+  }
+  private handleError = (error:any)=> {
+    if (error.status == 404){
+      alert("Flight not found!")
+      this.router.navigate(['/search-flights'])
+    }
+    console.log("Response Error Message", error.statusText)
+    console.log(error)
   }
 }
