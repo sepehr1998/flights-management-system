@@ -20,6 +20,7 @@ export class RegisterPassengerComponent {
   })
 
   register() {
-    this.passengerService.registerPassenger();
+    this.passengerService.registerPassenger({body: this.form.value})
+      .subscribe();
   }
 }
