@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using FlightsManagementBackend.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
+using FlightsManagementBackend.ReadModels;
 
 namespace FlightsManagementBackend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PassengerController
+public class PassengerController : ControllerBase
 {
     static private IList<NewPassengerDto> Passengers = new List<NewPassengerDto>();
     
@@ -18,5 +19,23 @@ public class PassengerController
     {
         Passengers.Add(dto);
         return Ok();
+    }
+
+    [HttpGet("{email}")]
+    public ActionResult<PassengerRm> Find(string email)
+    {
+        var passenger = Passengers.FirstOrDefault(p => p.Email == email);
+
+        if (passenger == null)
+            return NotFound();
+
+        var rm = new PassengerRm(
+            passenger.Email,
+            passenger.FirstName,
+            passenger.LastName,
+            passenger.Gender
+        );
+
+        return Ok(rm);
     }
 }
