@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { PassengerService } from "../api/services/passenger.service";
 import {FormsModule, ReactiveFormsModule, FormBuilder, Validators} from "@angular/forms";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   selector: 'app-register-passenger',
@@ -10,7 +11,7 @@ import {FormsModule, ReactiveFormsModule, FormBuilder, Validators} from "@angula
   styleUrl: './register-passenger.component.css'
 })
 export class RegisterPassengerComponent {
-  constructor(private passengerService: PassengerService, private fb: FormBuilder) {}
+  constructor(private passengerService: PassengerService, private fb: FormBuilder, private auth: AuthService) {}
 
   form = this.fb.group({
     email: [''],
@@ -21,6 +22,7 @@ export class RegisterPassengerComponent {
 
   register() {
     this.passengerService.registerPassenger({body: this.form.value})
-      .subscribe();
+      .subscribe(_ => this.auth.loginUser({ email: this.form.get('email')?.value }),
+        console.error)
   }
 }

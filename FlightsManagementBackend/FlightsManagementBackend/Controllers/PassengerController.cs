@@ -18,7 +18,7 @@ public class PassengerController : ControllerBase
     public IActionResult Register(NewPassengerDto dto)
     {
         Passengers.Add(dto);
-        return Ok();
+        return CreatedAtAction(nameof(Find), new { email = dto.Email });
     }
 
     [HttpGet("{email}")]
