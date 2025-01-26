@@ -20,6 +20,13 @@ export class RegisterPassengerComponent {
     isFemale: [true]
   })
 
+  checkPassenger(): void {
+    const params = { email: this.form.get('email')?.value }
+    this.passengerService.findPassenger(params).subscribe(_ => {
+      this.auth.loginUser({ email: this.form.get('email')?.value} )
+    })
+  }
+
   register() {
     this.passengerService.registerPassenger({body: this.form.value})
       .subscribe(_ => this.auth.loginUser({ email: this.form.get('email')?.value }),
