@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PassengerService } from "../api/services/passenger.service";
 import {FormsModule, ReactiveFormsModule, FormBuilder, Validators} from "@angular/forms";
 import { AuthService } from "../auth/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-register-passenger',
@@ -11,7 +12,11 @@ import { AuthService } from "../auth/auth.service";
   styleUrl: './register-passenger.component.css'
 })
 export class RegisterPassengerComponent {
-  constructor(private passengerService: PassengerService, private fb: FormBuilder, private auth: AuthService) {}
+  constructor(
+    private passengerService: PassengerService,
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router) {}
 
   form = this.fb.group({
     email: [''],
@@ -22,14 +27,23 @@ export class RegisterPassengerComponent {
 
   checkPassenger(): void {
     const params = { email: this.form.get('email')?.value }
-    this.passengerService.findPassenger(params).subscribe(_ => {
-      this.auth.loginUser({ email: this.form.get('email')?.value} )
-    })
+    this.passengerService.findPassenger(params).subscribe(
+      this.login, error => {
+        if(error.status !== 404) {
+          console.error(error)
+        }
+      }
+    )
   }
 
   register() {
     this.passengerService.registerPassenger({body: this.form.value})
-      .subscribe(_ => this.auth.loginUser({ email: this.form.get('email')?.value }),
+      .subscribe(this.login,
         console.error)
+  }
+
+  private login = () => {
+    this.auth.loginUser({ email: this.form.get('email')?.value })
+    this.router.navigate(['/search-flights'])
   }
 }
