@@ -1,5 +1,6 @@
 using FlightsManagementBackend.ReadModels;
 using Microsoft.AspNetCore.Mvc;
+using FlightsManagementBackend.Dtos;
 
 namespace FlightsManagementBackend.Controllers;
 
@@ -8,7 +9,7 @@ namespace FlightsManagementBackend.Controllers;
 public class FlightController : ControllerBase
 {
     static Random random = new Random();
-
+    
     static private FlightRm[] flights = new FlightRm[]
     {
         new(Guid.NewGuid(),
@@ -60,6 +61,8 @@ public class FlightController : ControllerBase
             new TimePlaceRm("Zagreb", DateTime.Now.AddHours(random.Next(4, 60))),
             random.Next(1, 853))
     };
+
+    static private IList<BookDto> Bookings = new List<BookDto>();
     
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -83,6 +86,12 @@ public class FlightController : ControllerBase
         }
 
         return Ok(flight);
+    }
+
+    [HttpPost]
+    public void Book(BookDto dto)
+    {
+        Bookings.Add(dto);
     }
 
 }
