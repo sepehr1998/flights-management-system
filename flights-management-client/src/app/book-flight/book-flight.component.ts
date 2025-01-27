@@ -4,11 +4,14 @@ import { FlightService } from "../api/services/flight.service";
 import { FlightRm } from "../api/models/flight-rm";
 import { DatePipe } from "@angular/common";
 import { AuthService } from "../auth/auth.service";
+import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-book-flight',
   imports: [
-    DatePipe
+    DatePipe,
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './book-flight.component.html',
   styleUrl: './book-flight.component.css',
@@ -20,9 +23,15 @@ export class BookFlightComponent implements OnInit {
     private route: ActivatedRoute,
     private flightService: FlightService,
     private router: Router,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    private fb: FormBuilder) { }
   flightId: string = 'not loaded'
   flight: FlightRm = {}
+
+  form = this.fb.group({
+    number: [1],
+  })
+
   ngOnInit() {
     if (!this.auth.currentUser)
       this.router.navigate(['/register-passenger'])
@@ -41,5 +50,9 @@ export class BookFlightComponent implements OnInit {
     }
     console.log("Response Error Message", error.statusText)
     console.log(error)
+  }
+
+  book() {
+    console.log('')
   }
 }
