@@ -5,6 +5,7 @@ import { FlightRm } from "../api/models/flight-rm";
 import { DatePipe } from "@angular/common";
 import { AuthService } from "../auth/auth.service";
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {BookDto} from "../api/models/book-dto";
 
 @Component({
   selector: 'app-book-flight',
@@ -53,6 +54,13 @@ export class BookFlightComponent implements OnInit {
   }
 
   book() {
-    console.log('')
+    const booking: BookDto = {
+      flightId: this.flightId,
+      passengerEmail: this.auth.currentUser?.email,
+      numberOfSeats: this.form.get('number')?.value
+    }
+
+    this.flightService.bookFlight({ body: booking })
+      .subscribe(_=>console.log("succeeded"), console.error)
   }
 }
