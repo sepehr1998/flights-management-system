@@ -89,9 +89,18 @@ public class FlightController : ControllerBase
     }
 
     [HttpPost]
-    public void Book(BookDto dto)
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(200)]
+    public IActionResult Book(BookDto dto)
     {
+        var flightFound = flights.Any(f => f.Id == dto.FlightId);
+        if (flightFound == false)
+            return NotFound();
+        
         Bookings.Add(dto);
+        return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
     }
 
 }
