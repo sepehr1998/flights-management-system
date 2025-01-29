@@ -26,7 +26,7 @@ export class RegisterPassengerComponent {
   })
 
   checkPassenger(): void {
-    const params = { email: this.form.get('email')?.value }
+    const params = { email: this.form.get('email')?.value || ""}
     this.passengerService.findPassenger(params).subscribe(
       this.login, error => {
         if(error.status !== 404) {
@@ -43,7 +43,7 @@ export class RegisterPassengerComponent {
   }
 
   private login = () => {
-    this.auth.loginUser({ email: this.form.get('email')?.value })
+    this.auth.loginUser({ email: this.form.get('email')?.value || ""})
     this.router.navigate(['/search-flights'])
   }
 }

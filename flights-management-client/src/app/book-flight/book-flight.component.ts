@@ -57,7 +57,7 @@ export class BookFlightComponent implements OnInit {
     const booking: BookDto = {
       flightId: this.flightId,
       passengerEmail: this.auth.currentUser?.email,
-      numberOfSeats: this.form.get('number')?.value
+      numberOfSeats: this.form.get('number')?.value || 0
     }
 
     this.flightService.bookFlight({ body: booking })
