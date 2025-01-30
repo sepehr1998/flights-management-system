@@ -4,7 +4,7 @@ import { FlightService } from "../api/services/flight.service";
 import { FlightRm } from "../api/models/flight-rm";
 import { DatePipe } from "@angular/common";
 import { AuthService } from "../auth/auth.service";
-import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import {BookDto} from "../api/models/book-dto";
 
 @Component({
@@ -30,7 +30,7 @@ export class BookFlightComponent implements OnInit {
   flight: FlightRm = {}
 
   form = this.fb.group({
-    number: [1],
+    number: [1, Validators.compose([Validators.required, Validators.min(1), Validators.max(254)])]
   })
 
   ngOnInit() {
@@ -54,6 +54,8 @@ export class BookFlightComponent implements OnInit {
   }
 
   book() {
+    if(this.form.invalid)
+      return
     const booking: BookDto = {
       flightId: this.flightId,
       passengerEmail: this.auth.currentUser?.email,
@@ -62,5 +64,9 @@ export class BookFlightComponent implements OnInit {
 
     this.flightService.bookFlight({ body: booking })
       .subscribe(_=> this.router.navigate(['/my-booking']), this.handleError)
+  }
+
+  get number() {
+    return this.form.controls.number
   }
 }
