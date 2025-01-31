@@ -62,9 +62,7 @@ public class FlightController : ControllerBase
             new TimePlace("Zagreb", DateTime.Now.AddHours(random.Next(4, 60))),
             random.Next(1, 853))
     };
-
-    static private IList<BookDto> Bookings = new List<BookDto>();
-
+    
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
     [ProducesResponseType(typeof(IEnumerable<FlightRm>), 200)]
@@ -115,11 +113,16 @@ public class FlightController : ControllerBase
     [ProducesResponseType(200)]
     public IActionResult Book(BookDto dto)
     {
-        var flightFound = flights.Any(f => f.Id == dto.FlightId);
-        if (flightFound == false)
+        var flight = flights.SingleOrDefault(f => f.Id == dto.FlightId);
+        if (flight == null)
             return NotFound();
         
-        Bookings.Add(dto);
+        flight.Bookings.Add(
+            new Booking(
+            dto.FlightId,
+            dto.PassengerEmail,
+            dto.NumberOfSeats)
+        );
         return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
     }
 
