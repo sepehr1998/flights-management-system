@@ -116,6 +116,9 @@ public class FlightController : ControllerBase
         var flight = flights.SingleOrDefault(f => f.Id == dto.FlightId);
         if (flight == null)
             return NotFound();
+
+        if (flight.RemainingNumberOfSeats < dto.NumberOfSeats)
+            return Conflict(new { message = "The number of requested seats exceeds number of remaining seats" });
         
         flight.Bookings.Add(
             new Booking(
@@ -123,6 +126,8 @@ public class FlightController : ControllerBase
             dto.PassengerEmail,
             dto.NumberOfSeats)
         );
+        
+        flight.RemainingNumberOfSeats -= dto.NumberOfSeats;
         return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
     }
 
