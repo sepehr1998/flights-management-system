@@ -2,6 +2,7 @@ using FlightsManagementBackend.ReadModels;
 using Microsoft.AspNetCore.Mvc;
 using FlightsManagementBackend.Dtos;
 using FlightsManagementBackend.Domain.Entities;
+using FlightsManagementBackend.Domain.Errors;
 
 namespace FlightsManagementBackend.Controllers;
 
@@ -116,17 +117,9 @@ public class FlightController : ControllerBase
         var flight = flights.SingleOrDefault(f => f.Id == dto.FlightId);
         if (flight == null)
             return NotFound();
-
-        if (flight.RemainingNumberOfSeats < dto.NumberOfSeats)
-            return Conflict(new { message = "The number of requested seats exceeds number of remaining seats" });
-        
-        flight.Bookings.Add(
-            new Booking(
-            dto.PassengerEmail,
-            dto.NumberOfSeats)
-        );
-        
-        flight.RemainingNumberOfSeats -= dto.NumberOfSeats;
+        var error = flight.MakeBooking(dto.PassengerEmail, dto.NumberOfSeats);
+        if (error is OverbookError)
+            return Conflict(new { message = "Not enough seats" });
         return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
     }
 
