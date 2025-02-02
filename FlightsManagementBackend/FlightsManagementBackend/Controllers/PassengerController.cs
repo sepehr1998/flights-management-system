@@ -2,6 +2,7 @@ using FlightsManagementBackend.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using FlightsManagementBackend.Dtos;
 using FlightsManagementBackend.ReadModels;
+using FlightsManagementBackend.Data;
 
 namespace FlightsManagementBackend.Controllers;
 
@@ -9,7 +10,6 @@ namespace FlightsManagementBackend.Controllers;
 [ApiController]
 public class PassengerController : ControllerBase
 {
-    static private IList<Passenger> Passengers = new List<Passenger>();
     
     [HttpPost]
     [ProducesResponseType(201)]
@@ -17,8 +17,9 @@ public class PassengerController : ControllerBase
     [ProducesResponseType(500)]
     public IActionResult Register(NewPassengerDto dto)
     {
-        Passengers.Add(
-            new Passenger(
+        Entities.Passengers.Add(
+            new Passenger
+            (
                 dto.Email,
                 dto.FirstName,
                 dto.LastName,
@@ -31,7 +32,7 @@ public class PassengerController : ControllerBase
     [HttpGet("{email}")]
     public ActionResult<PassengerRm> Find(string email)
     {
-        var passenger = Passengers.FirstOrDefault(p => p.Email == email);
+        var passenger = Entities.Passengers.FirstOrDefault(p => p.Email == email);
 
         if (passenger == null)
             return NotFound();
