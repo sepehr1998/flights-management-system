@@ -1,8 +1,12 @@
 using FlightsManagementBackend.Data;
 using FlightsManagementBackend.Domain.Entities;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<Entities>(options =>
+        options.UseInMemoryDatabase(databaseName: "Flights"), ServiceLifetime.Singleton);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
@@ -73,6 +77,8 @@ Flight[] flightsToSeed = new Flight[] {
 };
 
 entities.Flights.AddRange(flightsToSeed);
+entities.SaveChanges();
+
 app.UseCors(b => b.WithOrigins("*")
     .AllowAnyHeader()
     .AllowAnyMethod());
