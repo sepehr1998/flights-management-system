@@ -1,3 +1,4 @@
+using FlightsManagementBackend.Data;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddSwaggerGen(c =>
     });
     c.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"] + e.ActionDescriptor.RouteValues["controller"]}");
 });
+
+builder.Services.AddSingleton<Entities>();
 
 var app = builder.Build();
 

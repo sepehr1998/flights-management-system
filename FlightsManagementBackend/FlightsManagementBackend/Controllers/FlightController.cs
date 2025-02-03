@@ -11,13 +11,20 @@ namespace FlightsManagementBackend.Controllers;
 [Route("/api/[controller]")]
 public class FlightController : ControllerBase
 {
+
+    private readonly Entities _entities;
+
+    public FlightController(Entities entities)
+    {
+        _entities = entities;
+    }
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
     [ProducesResponseType(typeof(IEnumerable<FlightRm>), 200)]
     [HttpGet]
     public IEnumerable<FlightRm> Search()
     {
-        var flightRmList = Entities.Flights.Select(flight => new FlightRm(
+        var flightRmList = _entities.Flights.Select(flight => new FlightRm(
             flight.Id,
             flight.Airline,
             flight.Price,
@@ -35,7 +42,7 @@ public class FlightController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult<FlightRm> Find(Guid id)
     {
-        var flight = Entities.Flights.SingleOrDefault(f => f.Id == id);
+        var flight = _entities.Flights.SingleOrDefault(f => f.Id == id);
 
         if (flight == null)
         {
@@ -61,7 +68,7 @@ public class FlightController : ControllerBase
     [ProducesResponseType(200)]
     public IActionResult Book(BookDto dto)
     {
-        var flight = Entities.Flights.SingleOrDefault(f => f.Id == dto.FlightId);
+        var flight = _entities.Flights.SingleOrDefault(f => f.Id == dto.FlightId);
         if (flight == null)
             return NotFound();
         var error = flight.MakeBooking(dto.PassengerEmail, dto.NumberOfSeats);

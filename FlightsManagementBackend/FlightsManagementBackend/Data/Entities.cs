@@ -5,8 +5,8 @@ namespace FlightsManagementBackend.Data;
 public class Entities
 {
     private static Random random = new Random();
-    static public IList<Passenger> Passengers = new List<Passenger>();
-    static public Flight[] Flights = new Flight[]
+    public IList<Passenger> Passengers = new List<Passenger>();
+    public Flight[] Flights = new Flight[]
     {
         new(Guid.NewGuid(),
             "American Airlines",
