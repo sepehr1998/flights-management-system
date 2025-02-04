@@ -18,5 +18,6 @@ public class Entities : DbContext
         modelBuilder.Entity<Passenger>().HasKey(p => p.Email);
         modelBuilder.Entity<Flight>().OwnsOne(f => f.Departure);
         modelBuilder.Entity<Flight>().OwnsOne(f => f.Arrival);
+        modelBuilder.Entity<Flight>().Property(p => p.RemainingNumberOfSeats).IsConcurrencyToken();
     }
 }

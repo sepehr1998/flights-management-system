@@ -4,6 +4,7 @@ using FlightsManagementBackend.Dtos;
 using FlightsManagementBackend.Domain.Entities;
 using FlightsManagementBackend.Domain.Errors;
 using FlightsManagementBackend.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightsManagementBackend.Controllers;
 
@@ -74,6 +75,14 @@ public class FlightController : ControllerBase
         var error = flight.MakeBooking(dto.PassengerEmail, dto.NumberOfSeats);
         if (error is OverbookError)
             return Conflict(new { message = "Not enough seats" });
+        try
+        {
+            _entities.SaveChanges();
+        }
+        catch (DbUpdateConcurrencyException e)
+        {
+            return Conflict(new { message = "An error occured while booking" });
+        }
         return CreatedAtAction(nameof(Find), new { id = dto.FlightId });
     }
 

@@ -32,6 +32,7 @@ public class PassengerController : ControllerBase
                 dto.Gender
                 )
             );
+        _entities.SaveChanges();
         return CreatedAtAction(nameof(Find), new { email = dto.Email });
     }
 
