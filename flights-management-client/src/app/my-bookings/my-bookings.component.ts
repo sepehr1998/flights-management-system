@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BookingRm } from "../api/models/booking-rm";
+import { BookingRm, BookDto } from "../api/models";
 import { BookingService } from "../api/services/booking.service";
 import { AuthService } from "../auth/auth.service";
-import {FormBuilder} from "@angular/forms";
 import {DatePipe} from "@angular/common";
 import { Router } from "@angular/router";
 
@@ -30,5 +29,16 @@ export class MyBookingsComponent implements OnInit{
   }
   private handleError(error: any){
     console.log("Response Error, Status: " + error.status);
+  }
+
+  cancel(booking: BookingRm) {
+    const dto: BookDto = {
+      flightId: booking.flightId,
+      numberOfSeats: booking.numberOfBookedSeats,
+      passengerEmail: booking.passengerEmail
+    }
+    this.bookingService.cancelBooking({body: dto})
+      .subscribe(_ => {this.bookings = this.bookings.filter(b=>b != booking)},
+        this.handleError)
   }
 }
