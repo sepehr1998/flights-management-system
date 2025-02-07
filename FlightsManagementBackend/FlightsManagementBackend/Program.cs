@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<Entities>(options =>
-    options.UseSqlServer(), ServiceLifetime.Singleton);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Flights")));
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
@@ -24,6 +24,9 @@ builder.Services.AddSingleton<Entities>();
 var app = builder.Build();
 
 var entities = app.Services.CreateScope().ServiceProvider.GetService<Entities>();
+
+entities.Database.EnsureCreated();
+
 var random = new Random();
 Flight[] flightsToSeed = new Flight[] {
     new(Guid.NewGuid(),
