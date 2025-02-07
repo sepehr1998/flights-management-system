@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<Entities>(options =>
-        options.UseInMemoryDatabase(databaseName: "Flights"), ServiceLifetime.Singleton);
+    options.UseSqlServer(), ServiceLifetime.Singleton);
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
